@@ -1,8 +1,8 @@
 #define USE_MNIST_LOADER
 #define MNIST_DOUBLE
-#include "AlexNet_layer.cu"
-#include "../include/AlexNet_mnist.h"
-#include "../include/AlexNet_pixels.h"
+#include "layer.cu"
+#include "../include/mnist.h"
+#include "../include/pixels.h"
 
 #include <cstdio>
 #include <cuda.h>
@@ -13,18 +13,18 @@ using namespace std;
 
 // Define layers of CNN
 double iniStart = gettime();
-Layer L_input = Layer(0, 0, 227 * 227 * 3, "input");
-Layer L_c1 = Layer(11 * 11 * 3, 2 * 48, 2 * 55 * 55 * 48, "c1");
-Layer L_p1 = Layer(3 * 3, 2 * 1, 2 * 31 * 31 * 48, "p1");
-Layer L_c2 = Layer(5 * 5 * 48, 2 * 128, 2 * 128 * 27 * 27, "c2");
-Layer L_p2 = Layer(3 * 3, 2 * 1, 2 * 15 * 15 * 128, "p2");
-Layer L_c3 = Layer(3 * 3 * 256, 384, 2 * 13 * 13 * 192, "c3");
-Layer L_c4 = Layer(3 * 3 * 384, 2 * 192, 2 * 13 * 13 * 192, "c4");
-Layer L_c5 = Layer(3 * 3 * 384, 2 * 128, 2 * 13 * 13 * 128, "c5");
-Layer L_p3 = Layer(3 * 3, 2 * 1, 2 * 6 * 6 * 128, "p3");
-Layer L_f1 = Layer(6 * 6 * 256, 2 * 2048, 4096 * 1, "f1");
-Layer L_f2 = Layer(1 * 4096, 2 * 2048, 4096 * 1, "f2");
-Layer L_f3 = Layer(1 * 4096, 1000, 1000, "f3");
+ALayer L_input = ALayer(0, 0, 227 * 227 * 3, "input");
+ALayer L_c1 = ALayer(11 * 11 * 3, 2 * 48, 2 * 55 * 55 * 48, "c1");
+ALayer L_p1 = ALayer(3 * 3, 2 * 1, 2 * 31 * 31 * 48, "p1");
+ALayer L_c2 = ALayer(5 * 5 * 48, 2 * 128, 2 * 128 * 27 * 27, "c2");
+ALayer L_p2 = ALayer(3 * 3, 2 * 1, 2 * 15 * 15 * 128, "p2");
+ALayer L_c3 = ALayer(3 * 3 * 256, 384, 2 * 13 * 13 * 192, "c3");
+ALayer L_c4 = ALayer(3 * 3 * 384, 2 * 192, 2 * 13 * 13 * 192, "c4");
+ALayer L_c5 = ALayer(3 * 3 * 384, 2 * 128, 2 * 13 * 13 * 128, "c5");
+ALayer L_p3 = ALayer(3 * 3, 2 * 1, 2 * 6 * 6 * 128, "p3");
+ALayer L_f1 = ALayer(6 * 6 * 256, 2 * 2048, 4096 * 1, "f1");
+ALayer L_f2 = ALayer(1 * 4096, 2 * 2048, 4096 * 1, "f2");
+ALayer L_f3 = ALayer(1 * 4096, 1000, 1000, "f3");
 double iniEnd = gettime();
 
 static void learn(double data[227][227][3], cudaStream_t stream1);

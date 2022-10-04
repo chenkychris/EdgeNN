@@ -1,14 +1,135 @@
 // chenyang's version
 #define USE_MNIST_LOADER
 #define MNIST_DOUBLE
-#include "LeNet_conv.cpp"
-#include "LeNet_layer.cu"
-#include "../include/LeNet_mnist.h"
+#include "layer.cu"
+#include "../include/mnist.h"
 
 #include <cuda.h>
 #include <time.h>
 
 using namespace std;
+
+__global__ void myConv(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT,
+                       int IN_N, int OUT_N, float Offset = 1) {
+    OUT_N *= Offset;
+    int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT;
+    int OUT_HEIGHT_3 = IN_HEIGHT_3 - FILT_HEIGHT + 1, OUT_WIDTH_3 = IN_WIDTH_3 - FILT_WIDTH + 1;
+    int oh = blockIdx.x;
+    int ow = threadIdx.x;
+    if (oh >= OUT_HEIGHT_3 || ow >= OUT_WIDTH_3)
+        return;
+    int ff = blockIdx.y;
+    if (ff >= OUT_N)
+        return;
+    int offset0 = ow + oh * OUT_WIDTH_3 + ff * OUT_WIDTH_3 * OUT_HEIGHT_3;
+    float temp = biases[ff];
+    for (int cc = 0; cc < IN_N; cc++) {
+        for (int fh = 0; fh < FILT_HEIGHT; fh++) {
+            for (int fw = 0; fw < FILT_WIDTH; fw++) {
+                int index_weight = fw + FILT_WIDTH * (fh + FILT_HEIGHT * (cc + ff * IN_N));
+                int index_data = ow + fw + IN_WIDTH_3 * ((oh + fh) + cc * IN_HEIGHT_3);
+                temp += data[index_data] * weights[index_weight];
+            }
+        }
+    }
+    res[offset0] = temp;
+}
+
+void myConv_cpu(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N,
+                int OUT_N, float Offset = 0) {
+    int START_OUT_N = OUT_N * Offset;
+    int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT;
+    int OUT_HEIGHT_3 = IN_HEIGHT_3 - FILT_HEIGHT + 1, OUT_WIDTH_3 = IN_WIDTH_3 - FILT_WIDTH + 1;
+#pragma omp parallel for
+    for (int ff = START_OUT_N; ff < OUT_N; ff++) {
+
+        for (int oh = 0; oh < OUT_WIDTH_3; oh++)
+            for (int ow = 0; ow < OUT_HEIGHT_3; ow++) {
+                int offset0 = ow + oh * OUT_WIDTH_3 + ff * OUT_WIDTH_3 * OUT_HEIGHT_3;
+                float temp = biases[ff];
+                for (int cc = 0; cc < IN_N; cc++) {
+                    for (int fh = 0; fh < FILT_HEIGHT; fh++) {
+                        for (int fw = 0; fw < FILT_WIDTH; fw++) {
+                            int index_weight = fw + FILT_WIDTH * (fh + FILT_HEIGHT * (cc + ff * IN_N));
+                            int index_data = ow + fw + IN_WIDTH_3 * ((oh + fh) + cc * IN_HEIGHT_3);
+                            temp += data[index_data] * weights[index_weight];
+                        }
+                    }
+                }
+                res[offset0] = temp;
+            }
+    }
+}
+
+__global__ void myPooling(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT,
+                          int IN_N, float Offset = 1) {
+    IN_N *= Offset;
+    int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT, OUT_N = IN_N;
+    int OUT_HEIGHT_3 = IN_HEIGHT_3 / FILT_HEIGHT, OUT_WIDTH_3 = IN_WIDTH_3 / FILT_WIDTH;
+    int oh = blockIdx.x;
+    int ow = threadIdx.x;
+    if (oh >= OUT_HEIGHT_3 || ow >= OUT_WIDTH_3)
+        return;
+    int ff = blockIdx.y;
+    if (ff >= OUT_N)
+        return;
+    int offset0 = ow + oh * OUT_WIDTH_3 + ff * OUT_WIDTH_3 * OUT_HEIGHT_3;
+    float temp = biases[ff];
+    for (int fh = 0; fh < FILT_HEIGHT; fh++) {
+        for (int fw = 0; fw < FILT_WIDTH; fw++) {
+            int index_weight = fw + FILT_WIDTH * fh;
+            int index_data = ow * FILT_WIDTH + fw + IN_WIDTH_3 * ((oh * FILT_HEIGHT + fh) + ff * IN_HEIGHT_3);
+            temp += data[index_data] * weights[index_weight];
+        }
+    }
+    res[offset0] = temp;
+}
+
+void myPooling_cpu(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N,
+                   float Offset = 0) {
+    int START_IN_N = IN_N * Offset;
+    int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT;
+    int OUT_HEIGHT_3 = IN_HEIGHT_3 / FILT_HEIGHT, OUT_WIDTH_3 = IN_WIDTH_3 / FILT_WIDTH;
+#pragma omp parallel for
+    for (int ff = START_IN_N; ff < IN_N; ff++)
+        for (int oh = 0; oh < OUT_HEIGHT_3; oh++)
+            for (int ow = 0; ow < OUT_WIDTH_3; ow++) {
+                int offset0 = ow + oh * OUT_WIDTH_3 + ff * OUT_WIDTH_3 * OUT_HEIGHT_3;
+                float temp = biases[ff];
+                for (int fh = 0; fh < FILT_HEIGHT; fh++) {
+                    for (int fw = 0; fw < FILT_WIDTH; fw++) {
+                        int index_weight = fw + FILT_WIDTH * fh;
+                        int index_data =
+                            ow * FILT_WIDTH + fw + IN_WIDTH_3 * ((oh * FILT_HEIGHT + fh) + ff * IN_HEIGHT_3);
+                        temp += data[index_data] * weights[index_weight];
+                    }
+                }
+                res[offset0] = temp;
+            }
+}
+
+__global__ void myFfp(float *data, float *res, float *weight, float *bias, int inDim, int outDim, float Offset = 1) {
+    outDim *= Offset;
+    const int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < outDim) {
+        float temp = bias[idx];
+        for (int i = 0; i < inDim; i++) {
+            temp += weight[idx * inDim + i] * data[i];
+        }
+        res[idx] = temp;
+    }
+}
+void myFfp_cpu(float *data, float *res, float *weight, float *bias, int inDim, int outDim, float Offset = 0) {
+    int start_outDim = outDim * Offset;
+#pragma omp parallel for
+    for (int bIdx = start_outDim; bIdx < outDim; bIdx++) {
+        float temp = bias[bIdx];
+        for (int i = 0; i < inDim; i++) {
+            temp += weight[bIdx * inDim + i] * data[i];
+        }
+        res[bIdx] = temp;
+    }
+}
 
 bool printTime = true;
 
@@ -18,23 +139,23 @@ static unsigned int train_cnt, test_cnt;
 // Define layers of CNN
 double mainIniTime = 0, randTime = 0;
 double iniStart = gettime();
-Layer l_c3 = Layer(4 * 4 * 16, 120, 1 * 1 * 120, 5, randTime);
-Layer l_input = Layer(0, 0, 28 * 28, 0, randTime);
-Layer l_c1 = Layer(5 * 5, 6, 24 * 24 * 6, 1, randTime);
-Layer l_s1 = Layer(2 * 2, 1, 12 * 12 * 6, 2, randTime);
-Layer l_c2 = Layer(5 * 5 * 6, 16, 8 * 8 * 16, 3, randTime);
-Layer l_s2 = Layer(2 * 2, 1, 4 * 4 * 16, 4, randTime);
+LLayer l_c3 = LLayer(4 * 4 * 16, 120, 1 * 1 * 120, 5, randTime);
+LLayer l_input = LLayer(0, 0, 28 * 28, 0, randTime);
+LLayer l_c1 = LLayer(5 * 5, 6, 24 * 24 * 6, 1, randTime);
+LLayer l_s1 = LLayer(2 * 2, 1, 12 * 12 * 6, 2, randTime);
+LLayer l_c2 = LLayer(5 * 5 * 6, 16, 8 * 8 * 16, 3, randTime);
+LLayer l_s2 = LLayer(2 * 2, 1, 4 * 4 * 16, 4, randTime);
 
-Layer l_f1 = Layer(120, 84, 84, 6, randTime);
-Layer l_f2 = Layer(84, 10, 10, 7, randTime);
+LLayer l_f1 = LLayer(120, 84, 84, 6, randTime);
+LLayer l_f2 = LLayer(84, 10, 10, 7, randTime);
 double iniEnd = gettime();
 
 static void learn(cudaStream_t stream1);
 static double forward_pass(double data[28][28], cudaStream_t stream1, float offset = 1);
 
 static inline void loaddata() {
-    mnist_load("../data/minst/train-images.idx3-ubyte", "../data/minst/train-labels.idx1-ubyte", &train_set, &train_cnt);
-    mnist_load("../data/minst/t10k-images.idx3-ubyte", "../data/minst/t10k-labels.idx1-ubyte", &test_set, &test_cnt);
+    mnist_load("../data/mnist/train-images.idx3-ubyte", "../data/mnist/train-labels.idx1-ubyte", &train_set, &train_cnt);
+    mnist_load("../data/mnist/t10k-images.idx3-ubyte", "../data/mnist/t10k-labels.idx1-ubyte", &test_set, &test_cnt);
 }
 
 inline void get_cuda_size(const int N, int &grid, int &block) {

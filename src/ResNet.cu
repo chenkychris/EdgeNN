@@ -1,7 +1,7 @@
 #define USE_MNIST_LOADER
 #define MNIST_DOUBLE
-#include "ResNet_layer.cu"
-#include "../include/ResNet_mnist.h"
+#include "layer.cu"
+#include "../include/mnist.h"
 #include <cstdio>
 #include <cuda.h>
 #include <time.h>
@@ -11,19 +11,19 @@ static unsigned int train_cnt, test_cnt;
 
 // Define layers of CNN
 double iniStart = gettime();
-static Layer l_input = Layer(0, 0, 28 * 28, "input");
-static Layer l_c1 = Layer(5 * 5, 6, 24 * 24 * 6, "c1");
-static Layer l_c2 = Layer(2 * 2, 6, 12 * 12 * 6, "c2");
-static Layer l_c3 = Layer(2 * 2, 6, 6 * 6 * 6, "c3");
-static Layer l_f = Layer(6 * 6 * 6, 10, 10, "f");
-static Layer l_r = Layer(4 * 4, 1, 6 * 6 * 6, "r");
+static RLayer l_input = RLayer(0, 0, 28 * 28, "input");
+static RLayer l_c1 = RLayer(5 * 5, 6, 24 * 24 * 6, "c1");
+static RLayer l_c2 = RLayer(2 * 2, 6, 12 * 12 * 6, "c2");
+static RLayer l_c3 = RLayer(2 * 2, 6, 6 * 6 * 6, "c3");
+static RLayer l_f = RLayer(6 * 6 * 6, 10, 10, "f");
+static RLayer l_r = RLayer(4 * 4, 1, 6 * 6 * 6, "r");
 double iniEnd = gettime();
 static void learn();
 static double forward_pass(double data[28][28]);
 
 static inline void loaddata() {
-    mnist_load("../data/minst/train-images.idx3-ubyte", "../data/minst/train-labels.idx1-ubyte", &train_set, &train_cnt);
-    mnist_load("../data/minst/t10k-images.idx3-ubyte", "../data/minst/t10k-labels.idx1-ubyte", &test_set, &test_cnt);
+    mnist_load("../data/mnist/train-images.idx3-ubyte", "../data/mnist/train-labels.idx1-ubyte", &train_set, &train_cnt);
+    mnist_load("../data/mnist/t10k-images.idx3-ubyte", "../data/mnist/t10k-labels.idx1-ubyte", &test_set, &test_cnt);
 }
 
 inline void get_cuda_size(const int N, int &grid, int &block) {

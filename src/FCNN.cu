@@ -1,12 +1,28 @@
-#include "FCNN_layer.cu"
-#include "../include/FCNN_file.h"
+#include "layer.cu"
 #include "cuda.h"
 #include <cuda.h>
 #include <omp.h>
 #include <sys/time.h>
 #include <time.h>
+#include <fstream>
 
 using namespace std;
+
+int readFile(char *fname, float *arr, int n) {
+    ifstream ifile;
+    ifile.open(fname, ios::in);
+    if (!ifile) {
+        cerr << "Open File Fail." << endl;
+        return 1;
+    }
+    for (int i = 0; i < n; i++) {
+        ifile >> arr[i];
+    }
+    ifile.close();
+    return 0;
+}
+
+float sigmoid(float z) { return 1 / (1 + exp(-z)); }
 
 struct mData {
     float data[InDim];
@@ -22,9 +38,9 @@ float testLabel[2] = {0.1, 0.8};
 // Define layers
 double mainIniTime = 0;
 double iniStart = gettime();
-static mLayer l_input = mLayer(0, InDim, "input");
-static mLayer l_h = mLayer(InDim, hDim, "h");
-static mLayer l_f = mLayer(hDim, OutDim, "output");
+static FLayer l_input = FLayer(0, InDim, "input");
+static FLayer l_h = FLayer(InDim, hDim, "h");
+static FLayer l_f = FLayer(hDim, OutDim, "output");
 double iniEnd = gettime();
 
 static double forward_propagation(float *, cudaStream_t);

@@ -1,5 +1,4 @@
-#include <assert.h>
-#include <../inlcude/VGG-base.h>
+#include <assert.h
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 #include <omp.h>
@@ -16,6 +15,33 @@
 #define clamp(x) (max(max((x), 0.0), x))
 #define SIZE 224
 #define max4(w, x, y, z) max(max(max(w, x), y), z)
+
+#define INPUT_CHANNELS 3
+#define CONV_SIZE 3
+int layers[13][4] = {
+	{ 64, 3, CONV_SIZE, CONV_SIZE },
+	{ 64, 64, CONV_SIZE, CONV_SIZE },
+	{ 128, 64, CONV_SIZE, CONV_SIZE },
+	{ 128, 128, CONV_SIZE, CONV_SIZE },
+	{ 256, 128, CONV_SIZE, CONV_SIZE },
+	{ 256, 256, CONV_SIZE, CONV_SIZE },
+	{ 256, 256, CONV_SIZE, CONV_SIZE },
+	{ 512, 256, CONV_SIZE, CONV_SIZE },
+	{ 512, 512, CONV_SIZE, CONV_SIZE },
+	{ 512, 512, CONV_SIZE, CONV_SIZE },
+	{ 512, 512, CONV_SIZE, CONV_SIZE },
+	{ 512, 512, CONV_SIZE, CONV_SIZE },
+	{ 512, 512, CONV_SIZE, CONV_SIZE }
+};
+
+int dense[3][2] = {
+	{ 25088, 4096 },
+	{ 4096, 4096 },
+	{ 4096, 1000 }
+};
+
+#define MASK_WIDTH 3
+#define TILE_SIZE_1 32
 
 double gettime() {
     struct timeval t;
