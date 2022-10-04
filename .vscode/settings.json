@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "*.s": "asm-collection",
-        "iosfwd": "cpp"
-    }
-}
