@@ -9,8 +9,9 @@
 
 using namespace std;
 
-__global__ void myConv(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N, int OUT_N, float Offset = 1) {
-    OUT_N *= Offset;
+__global__ void myConv(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT,
+                       int IN_N, int OUT_N, float offset = 1) {
+    OUT_N *= offset;
     int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT;
     int OUT_HEIGHT_3 = IN_HEIGHT_3 - FILT_HEIGHT + 1, OUT_WIDTH_3 = IN_WIDTH_3 - FILT_WIDTH + 1;
     int oh = blockIdx.x;
@@ -34,8 +35,9 @@ __global__ void myConv(float *data, float *res, float *weights, float *biases, i
     res[offset0] = temp;
 }
 
-void myConv_cpu(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N, int OUT_N, float Offset = 0) {
-    int START_OUT_N = OUT_N * Offset;
+void myConv_cpu(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N,
+                int OUT_N, float offset = 0) {
+    int START_OUT_N = OUT_N * offset;
     int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT;
     int OUT_HEIGHT_3 = IN_HEIGHT_3 - FILT_HEIGHT + 1, OUT_WIDTH_3 = IN_WIDTH_3 - FILT_WIDTH + 1;
 #pragma omp parallel for
@@ -59,8 +61,9 @@ void myConv_cpu(float *data, float *res, float *weights, float *biases, int IN_H
     }
 }
 
-__global__ void myPooling(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N, float Offset = 1) {
-    IN_N *= Offset;
+__global__ void myPooling(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT,
+                          int IN_N, float offset = 1) {
+    IN_N *= offset;
     int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT, OUT_N = IN_N;
     int OUT_HEIGHT_3 = IN_HEIGHT_3 / FILT_HEIGHT, OUT_WIDTH_3 = IN_WIDTH_3 / FILT_WIDTH;
     int oh = blockIdx.x;
@@ -82,8 +85,9 @@ __global__ void myPooling(float *data, float *res, float *weights, float *biases
     res[offset0] = temp;
 }
 
-void myPooling_cpu(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N, float Offset = 0) {
-    int START_IN_N = IN_N * Offset;
+void myPooling_cpu(float *data, float *res, float *weights, float *biases, int IN_HEIGHT_3, int FILT_HEIGHT, int IN_N,
+                   float offset = 0) {
+    int START_IN_N = IN_N * offset;
     int IN_WIDTH_3 = IN_HEIGHT_3, FILT_WIDTH = FILT_HEIGHT;
     int OUT_HEIGHT_3 = IN_HEIGHT_3 / FILT_HEIGHT, OUT_WIDTH_3 = IN_WIDTH_3 / FILT_WIDTH;
 #pragma omp parallel for
@@ -104,8 +108,8 @@ void myPooling_cpu(float *data, float *res, float *weights, float *biases, int I
             }
 }
 
-__global__ void myFfp(float *data, float *res, float *weight, float *bias, int inDim, int outDim, float Offset = 1) {
-    outDim *= Offset;
+__global__ void myFfp(float *data, float *res, float *weight, float *bias, int inDim, int outDim, float offset = 1) {
+    outDim *= offset;
     const int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < outDim) {
         float temp = bias[idx];
@@ -115,8 +119,8 @@ __global__ void myFfp(float *data, float *res, float *weight, float *bias, int i
         res[idx] = temp;
     }
 }
-void myFfp_cpu(float *data, float *res, float *weight, float *bias, int inDim, int outDim, float Offset = 0) {
-    int start_outDim = outDim * Offset;
+void myFfp_cpu(float *data, float *res, float *weight, float *bias, int inDim, int outDim, float offset = 0) {
+    int start_outDim = outDim * offset;
 #pragma omp parallel for
     for (int bIdx = start_outDim; bIdx < outDim; bIdx++) {
         float temp = bias[bIdx];

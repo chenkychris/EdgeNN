@@ -14,18 +14,23 @@ VGGMAIN = VGG.cu
 all: ${OBJECTS}
 
 ${BINDIR}/AlexNet: ${SRCDIR}/${ALEXNETMAIN}
+	@mkdir -p ${BINDIR}
 	${NVCC} ${NVCCFLAGS} -lcuda -lcublas $^ -o $@
 
 ${BINDIR}/FCNN: ${SRCDIR}/${FCNNMAIN}
+	@mkdir -p ${BINDIR}
 	${NVCC} ${NVCCFLAGS} -Wno-deprecated-gpu-targets -lcuda -lcublas -arch=compute_72 -code=sm_72 $^ -o $@
 
 ${BINDIR}/LeNet: ${SRCDIR}/${LENETMAIN}
+	@mkdir -p ${BINDIR}
 	${NVCC} ${NVCCFLAGS} -Wno-deprecated-gpu-targets -lcuda -lcublas $^ -o $@
 
 ${BINDIR}/ResNet: ${SRCDIR}/${RESNETMAIN}
+	@mkdir -p ${BINDIR}
 	${NVCC} ${NVCCFLAGS} -lcuda -lcublas $^ -o $@ 
 
 ${BINDIR}/SqueezeNet: ${SRCDIR}/${SQUEEZENETMAIN}
+	@mkdir -p ${BINDIR}
 	${NVCC} ${NVCCFLAGS} -arch=compute_72 -code=sm_72 $^ -o $@
 
 ${BINDIR}/VGG: ${SRCDIR}/${VGGMAIN}
