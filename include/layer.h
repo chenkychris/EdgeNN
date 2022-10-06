@@ -371,8 +371,6 @@ const static float Rdt = 1.0E-01f;
 
 const static float Rthreshold = 1.0E-02f;
 
-float offset = 1;
-
 #define RinputDim 28 * 28
 
 #define Rc1wDim 5 * 5 * 6
@@ -394,12 +392,6 @@ float offset = 1;
 #define RrwDim 4 * 4 * 1
 #define RrN 1
 #define RroutDim 6 * 6 * 6
-
-double gettime() {
-    struct timeval t;
-    gettimeofday(&t, NULL);
-    return t.tv_sec + t.tv_usec * 1e-6;
-}
 
 // global mem//
 double RmallocStart = gettime();
