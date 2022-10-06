@@ -7,7 +7,7 @@
 #include <time.h>
 
 static mnist_data *train_set, *test_set;
-static unsigned int train_cnt, test_cnt;
+static unsigned int Rtrain_cnt, Rtest_cnt;
 
 // Define layers of CNN
 double iniStart = gettime();
@@ -22,8 +22,8 @@ static void learn();
 static double forward_pass(double data[28][28]);
 
 static inline void loaddata() {
-    mnist_load("../data/mnist/train-images.idx3-ubyte", "../data/mnist/train-labels.idx1-ubyte", &train_set, &train_cnt);
-    mnist_load("../data/mnist/t10k-images.idx3-ubyte", "../data/mnist/t10k-labels.idx1-ubyte", &test_set, &test_cnt);
+    mnist_load("../data/mnist/train-images.idx3-ubyte", "../data/mnist/train-labels.idx1-ubyte", &train_set, &Rtrain_cnt);
+    mnist_load("../data/mnist/t10k-images.idx3-ubyte", "../data/mnist/t10k-labels.idx1-ubyte", &test_set, &Rtest_cnt);
 }
 
 inline void get_cuda_size(const int N, int &grid, int &block) {

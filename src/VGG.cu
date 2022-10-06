@@ -1,4 +1,4 @@
-#include <assert.h
+#include <assert.h>
 #include <cuda.h>
 #include <cuda_runtime_api.h>
 #include <omp.h>
@@ -51,7 +51,6 @@ double gettime() {
 
 typedef enum {
     CONV_1 = 512,
-
 } ch;
 const int out = ch(CONV_1);
 
