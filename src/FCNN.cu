@@ -1,5 +1,4 @@
 #include "layer.cu"
-#include "cuda.h"
 #include <cuda.h>
 #include <omp.h>
 #include <sys/time.h>
@@ -122,21 +121,21 @@ int main(int argc, const char **argv) {
     }
     cudaStream_t stream1;
     cudaStreamCreate(&stream1);
-    cudaStreamAttachMemAsync(stream1, &input_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &h_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &output_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Finput_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Fh_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Foutput_dz, 0, cudaMemAttachHost);
     cudaDeviceSynchronize();
 
     getData(train_set);

@@ -190,23 +190,23 @@ const static float Fthreshold = 1.0E-02f;
 
 // global mem//
 double FmallocStart = gettime();
-__device__ __managed__ float input_a[InDim];
+__device__ __managed__ float Finput_a[InDim];
 
-__device__ __managed__ float h_weight[InDim * hDim];
-__device__ __managed__ float h_bias[hDim];
-__device__ __managed__ float h_a[hDim];
-__device__ __managed__ float h_z[hDim];
-__device__ __managed__ float h_dweight[InDim * hDim];
-__device__ __managed__ float h_da[hDim];
-__device__ __managed__ float h_dz[hDim];
+__device__ __managed__ float Fh_weight[InDim * hDim];
+__device__ __managed__ float Fh_bias[hDim];
+__device__ __managed__ float Fh_a[hDim];
+__device__ __managed__ float Fh_z[hDim];
+__device__ __managed__ float Fh_dweight[InDim * hDim];
+__device__ __managed__ float Fh_da[hDim];
+__device__ __managed__ float Fh_dz[hDim];
 
-__device__ __managed__ float output_weight[OutDim * hDim];
-__device__ __managed__ float output_bias[OutDim];
-__device__ __managed__ float output_a[OutDim];
-__device__ __managed__ float output_z[OutDim];
-__device__ __managed__ float output_dweight[OutDim * hDim];
-__device__ __managed__ float output_da[OutDim];
-__device__ __managed__ float output_dz[OutDim];
+__device__ __managed__ float Foutput_weight[OutDim * hDim];
+__device__ __managed__ float Foutput_bias[OutDim];
+__device__ __managed__ float Foutput_a[OutDim];
+__device__ __managed__ float Foutput_z[OutDim];
+__device__ __managed__ float Foutput_dweight[OutDim * hDim];
+__device__ __managed__ float Foutput_da[OutDim];
+__device__ __managed__ float Foutput_dz[OutDim];
 double FmallocEnd = gettime();
 
 class FLayer {
