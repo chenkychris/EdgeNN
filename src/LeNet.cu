@@ -134,7 +134,7 @@ void myFfp_cpu(float *data, float *res, float *weight, float *bias, int inDim, i
 bool printTime = true;
 
 static mnist_data *train_set, *test_set;
-static unsigned int train_cnt, test_cnt;
+static unsigned int Ltrain_cnt, Ltest_cnt;
 
 // Define layers of CNN
 double mainIniTime = 0, randTime = 0;
@@ -154,8 +154,8 @@ static void learn(cudaStream_t stream1);
 static double forward_pass(double data[28][28], cudaStream_t stream1, float offset = 1);
 
 static inline void loaddata() {
-    mnist_load("../data/mnist/train-images.idx3-ubyte", "../data/mnist/train-labels.idx1-ubyte", &train_set, &train_cnt);
-    mnist_load("../data/mnist/t10k-images.idx3-ubyte", "../data/mnist/t10k-labels.idx1-ubyte", &test_set, &test_cnt);
+    mnist_load("../data/mnist/train-images.idx3-ubyte", "../data/mnist/train-labels.idx1-ubyte", &train_set, &Ltrain_cnt);
+    mnist_load("../data/mnist/t10k-images.idx3-ubyte", "../data/mnist/t10k-labels.idx1-ubyte", &test_set, &Ltest_cnt);
 }
 
 inline void get_cuda_size(const int N, int &grid, int &block) {
@@ -225,21 +225,21 @@ int main(int argc, const char **argv) {
     cudaStreamAttachMemAsync(stream1, &Lf2_da, 0, cudaMemAttachHost);
     cudaStreamAttachMemAsync(stream1, &Lf2_dz, 0, cudaMemAttachHost);
 
-    cudaMemAdvise(input_a, inputDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(c3_weight, c3wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(c3_bias, c3N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(c1_weight, c1wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(c1_bias, c1N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(s1_weight, s1wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(s1_bias, s1N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(c2_weight, c2wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(c2_bias, c2N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(s2_weight, s2wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(s2_bias, s2N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(f1_weight, f1wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(f1_bias, f1N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(f2_weight, f2wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
-    cudaMemAdvise(f2_bias, f2N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Linput_a, LinputDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lc3_weight, Lc3wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lc3_bias, Lc3N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lc1_weight, Lc1wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lc1_bias, Lc1N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Ls1_weight, Ls1wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Ls1_bias, Ls1N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lc2_weight, Lc2wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lc2_bias, Lc2N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Ls2_weight, Ls2wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Ls2_bias, Ls2N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lf1_weight, Lf1wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lf1_bias, Lf1N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lf2_weight, Lf2wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
+    cudaMemAdvise(Lf2_bias, Lf2N * sizeof(float), cudaMemAdviseSetReadMostly, 0);
 
     double mainIniEnd = gettime();
     mainIniTime = mainIniEnd - mainIniSt;
