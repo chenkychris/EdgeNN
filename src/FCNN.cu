@@ -22,8 +22,6 @@ int readFile(char *fname, float *arr, int n) {
     return 0;
 }
 
-float sigmoid(float z) { return 1 / (1 + exp(-z)); }
-
 struct mData {
     float data[InDim];
     float *label;
@@ -206,7 +204,7 @@ void apply_step_function_cpu(float *input, float *output, const int N) {
     const int startN = N * offset;
 
     for (int idx = startN; idx < N; ++idx) {
-        output[idx] = sigmoid(input[idx]);
+        output[idx] = sigmoid_cpu(input[idx]);
     }
 }
 

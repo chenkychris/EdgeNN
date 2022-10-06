@@ -136,7 +136,7 @@ __device__ float Astep_function(float v) // Sigmoid function::Activation Functio
 {
     return max(0.f, v);
 }
-float step_function_cpu(float v) // Sigmoid function::Activation Function
+float Astep_function_cpu(float v) // Sigmoid function::Activation Function
 {
     return max(0.f, v);
 }
@@ -192,9 +192,9 @@ __global__ void Aapply_step_function(float *input, float *output, const int N) {
         output[idx] = Astep_function(input[idx]);
     }
 }
-void apply_step_function_cpu(float *input, float *output, const int N) {
+void Aapply_step_function_cpu(float *input, float *output, const int N) {
     for (int idx = N * offset; idx < N; ++idx) {
-        output[idx] = step_function_cpu(input[idx]);
+        output[idx] = Astep_function_cpu(input[idx]);
     }
 }
 
