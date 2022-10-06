@@ -430,7 +430,6 @@ __device__ __managed__ float Rr_bias[RrN];
 __device__ __managed__ float Rr_a[RroutDim];
 __device__ __managed__ float Rr_z[RroutDim];
 double RmallocEnd = gettime();
-#endif
 
 class RLayer {
   public:

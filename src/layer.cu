@@ -30,54 +30,54 @@ ALayer::ALayer(long int M, long int N, long int O, char *arg) {
         isLRN = 1;
         // output=c1_o;
         cudaMalloc(&output, sizeof(float) * 2 * 55 * 55 * 48);
-        act_result = c1_a;
-        preact = c1_z;
-        bias = c1_bias;
-        weight = c1_weight;
+        act_result = Ac1_a;
+        preact = Ac1_z;
+        bias = Ac1_bias;
+        weight = Ac1_weight;
 
     } else if (strcmp(arg, "p1") == 0) {
-        output = p1_a;
+        output = Ap1_a;
     } else if (strcmp(arg, "c2") == 0) {
         isLRN = 1;
-        output = c2_o;
-        act_result = c2_a;
-        preact = c2_z;
-        bias = c2_bias;
-        weight = c2_weight;
+        output = Ac2_o;
+        act_result = Ac2_a;
+        preact = Ac2_z;
+        bias = Ac2_bias;
+        weight = Ac2_weight;
     } else if (strcmp(arg, "p2") == 0) {
-        output = p2_a;
+        output = Ap2_a;
     } else if (strcmp(arg, "c3") == 0) {
-        output = c3_a;
-        preact = c3_z;
-        bias = c3_bias;
-        weight = c3_weight;
+        output = Ac3_a;
+        preact = Ac3_z;
+        bias = Ac3_bias;
+        weight = Ac3_weight;
     } else if (strcmp(arg, "c4") == 0) {
-        output = c4_a;
-        preact = c4_z;
-        bias = c4_bias;
-        weight = c4_weight;
+        output = Ac4_a;
+        preact = Ac4_z;
+        bias = Ac4_bias;
+        weight = Ac4_weight;
     } else if (strcmp(arg, "c5") == 0) {
-        output = c5_a;
-        preact = c5_z;
-        bias = c5_bias;
-        weight = c5_weight;
+        output = Ac5_a;
+        preact = Ac5_z;
+        bias = Ac5_bias;
+        weight = Ac5_weight;
     } else if (strcmp(arg, "p3") == 0) {
-        output = p3_a;
+        output = Ap3_a;
     } else if (strcmp(arg, "f1") == 0) {
-        output = f1_a;
-        preact = f1_z;
-        bias = f1_bias;
-        weight = f1_weight;
+        output = Af1_a;
+        preact = Af1_z;
+        bias = Af1_bias;
+        weight = Af1_weight;
     } else if (strcmp(arg, "f2") == 0) {
-        output = f2_a;
-        preact = f2_z;
-        bias = f2_bias;
-        weight = f2_weight;
+        output = Af2_a;
+        preact = Af2_z;
+        bias = Af2_bias;
+        weight = Af2_weight;
     } else if (strcmp(arg, "f3") == 0) {
-        output = f3_a;
-        preact = f3_z;
-        bias = f3_bias;
-        weight = f3_weight;
+        output = Af3_a;
+        preact = Af3_z;
+        bias = Af3_bias;
+        weight = Af3_weight;
     }
     if (M && arg[0] != 'p')
         for (int i = 0; i < N; ++i) {
@@ -710,61 +710,61 @@ LLayer::LLayer(int M, int N, int O, int arg, double &randTime) {
     if (arg == 0)
         output = input_a;
     else if (arg == 1) {
-        output = c1_a;
-        preact = c1_z;
-        bias = c1_bias;
-        weight = c1_weight;
-        d_output = c1_da;
-        d_preact = c1_dz;
-        d_weight = c1_dweight;
+        output = Lc1_a;
+        preact = Lc1_z;
+        bias = Lc1_bias;
+        weight = Lc1_weight;
+        d_output = Lc1_da;
+        d_preact = Lc1_dz;
+        d_weight = Lc1_dweight;
     } else if (arg == 2) {
-        output = s1_a;
-        preact = s1_z;
-        bias = s1_bias;
-        weight = s1_weight;
-        d_output = s1_da;
-        d_preact = s1_dz;
-        d_weight = s1_dweight;
+        output = Ls1_a;
+        preact = Ls1_z;
+        bias = Ls1_bias;
+        weight = Ls1_weight;
+        d_output = Ls1_da;
+        d_preact = Ls1_dz;
+        d_weight = Ls1_dweight;
     } else if (arg == 3) {
-        output = c2_a;
-        preact = c2_z;
-        bias = c2_bias;
-        weight = c2_weight;
-        d_output = c2_da;
-        d_preact = c2_dz;
-        d_weight = c2_dweight;
+        output = Lc2_a;
+        preact = Lc2_z;
+        bias = Lc2_bias;
+        weight = Lc2_weight;
+        d_output = Lc2_da;
+        d_preact = Lc2_dz;
+        d_weight = Lc2_dweight;
     } else if (arg == 4) {
-        output = s2_a;
-        preact = s2_z;
-        bias = s2_bias;
-        weight = s2_weight;
-        d_output = s2_da;
-        d_preact = s2_dz;
-        d_weight = s2_dweight;
+        output = Ls2_a;
+        preact = Ls2_z;
+        bias = Ls2_bias;
+        weight = Ls2_weight;
+        d_output = Ls2_da;
+        d_preact = Ls2_dz;
+        d_weight = Ls2_dweight;
     } else if (arg == 5) {
-        output = c3_a;
-        preact = c3_z;
-        bias = c3_bias;
-        weight = c3_weight;
-        d_output = c3_da;
-        d_preact = c3_dz;
-        d_weight = c3_dweight;
+        output = Lc3_a;
+        preact = Lc3_z;
+        bias = Lc3_bias;
+        weight = Lc3_weight;
+        d_output = Lc3_da;
+        d_preact = Lc3_dz;
+        d_weight = Lc3_dweight;
     } else if (arg == 6) {
-        output = f1_a;
-        preact = f1_z;
-        bias = f1_bias;
-        weight = f1_weight;
-        d_output = f1_da;
-        d_preact = f1_dz;
-        d_weight = f1_dweight;
+        output = Lf1_a;
+        preact = Lf1_z;
+        bias = Lf1_bias;
+        weight = Lf1_weight;
+        d_output = Lf1_da;
+        d_preact = Lf1_dz;
+        d_weight = Lf1_dweight;
     } else if (arg == 7) {
-        output = f2_a;
-        preact = f2_z;
-        bias = f2_bias;
-        weight = f2_weight;
-        d_output = f2_da;
-        d_preact = f2_dz;
-        d_weight = f2_dweight;
+        output = Lf2_a;
+        preact = Lf2_z;
+        bias = Lf2_bias;
+        weight = Lf2_weight;
+        d_output = Lf2_da;
+        d_preact = Lf2_dz;
+        d_weight = Lf2_dweight;
     }
     double randSt = gettime();
     if (M)
@@ -865,33 +865,32 @@ RLayer::RLayer(int M, int N, int O, char *arg) {
     d_weight = NULL;
 
     if (strcmp(arg, "input") == 0)
-        output = input_a;
+        output = Linput_a;
     else if (strcmp(arg, "c1") == 0) {
-        output = c1_a;
-        preact = c1_z;
-        bias = c1_bias;
-        weight = c1_weight;
-
+        output = Lc1_a;
+        preact = Lc1_z;
+        bias = Lc1_bias;
+        weight = Lc1_weight;
     } else if (strcmp(arg, "c2") == 0) {
-        output = c2_a;
-        preact = c2_z;
-        bias = c2_bias;
-        weight = c2_weight;
+        output = Lc2_a;
+        preact = Lc2_z;
+        bias = Lc2_bias;
+        weight = Lc2_weight;
     } else if (strcmp(arg, "c3") == 0) {
-        output = c3_a;
-        preact = c3_z;
-        bias = c3_bias;
-        weight = c3_weight;
+        output = Lc3_a;
+        preact = Lc3_z;
+        bias = Lc3_bias;
+        weight = Lc3_weight;
     } else if (strcmp(arg, "f") == 0) {
-        output = f_a;
-        preact = f_z;
-        bias = f_bias;
-        weight = f_weight;
+        output = Lf_a;
+        preact = Lf_z;
+        bias = Lf_bias;
+        weight = Lf_weight;
     } else if (strcmp(arg, "r") == 0) {
-        output = r_a;
-        preact = r_z;
-        bias = r_bias;
-        weight = r_weight;
+        output = Lr_a;
+        preact = Lr_z;
+        bias = Lr_bias;
+        weight = Lr_weight;
     }
 
     if (M)
