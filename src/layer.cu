@@ -25,7 +25,7 @@ ALayer::ALayer(long int M, long int N, long int O, char *arg) {
     d_weight = NULL;
 
     if (strcmp(arg, "input") == 0)
-        output = input_a;
+        output = Ainput_a;
     else if (strcmp(arg, "c1") == 0) {
         isLRN = 1;
         // output=c1_o;
@@ -636,23 +636,23 @@ FLayer::FLayer(int in, int out, char *arg) {
         a = input_a;
 
     if (arg != NULL && (strcmp(arg, "h") == 0 || strcmp(arg, "htest") == 0)) {
-        weight = h_weight;
-        bias = h_bias;
-        a = h_a;
-        z = h_z;
-        dweight = h_dweight;
-        da = h_da;
-        dz = h_dz;
+        weight = Fh_weight;
+        bias = Fh_bias;
+        a = Fh_a;
+        z = Fh_z;
+        dweight = Fh_dweight;
+        da = Fh_da;
+        dz = Fh_dz;
     }
 
     if (arg != NULL && (strcmp(arg, "output") == 0 || strcmp(arg, "outputtest") == 0)) {
-        weight = output_weight;
-        bias = output_bias;
-        a = output_a;
-        z = output_z;
-        dweight = output_dweight;
-        da = output_da;
-        dz = output_dz;
+        weight = Foutput_weight;
+        bias = Foutput_bias;
+        a = Foutput_a;
+        z = Foutput_z;
+        dweight = Foutput_dweight;
+        da = Foutput_da;
+        dz = Foutput_dz;
     }
 
     if (arg != NULL && (strcmp(arg, "test") == 0 || strcmp(arg, "htest") == 0 || strcmp(arg, "outputtest") == 0)) {
@@ -708,7 +708,7 @@ LLayer::LLayer(int M, int N, int O, int arg, double &randTime) {
     this->O = O;
 
     if (arg == 0)
-        output = input_a;
+        output = Linput_a;
     else if (arg == 1) {
         output = Lc1_a;
         preact = Lc1_z;
