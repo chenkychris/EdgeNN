@@ -44,7 +44,7 @@ int main(int argc, const char **argv) {
     cudaStream_t stream1;
     cudaStreamCreate(&stream1);
     cudaStreamAttachMemAsync(stream1, &Ainput_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &Ainput_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ac1_weight, 0, cudaMemAttachHost);
     cudaStreamAttachMemAsync(stream1, &Ac1_bias, 0, cudaMemAttachHost);
     cudaStreamAttachMemAsync(stream1, &Ac1_a, 0, cudaMemAttachHost);
     cudaStreamAttachMemAsync(stream1, &Ac1_z, 0, cudaMemAttachHost);

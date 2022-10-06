@@ -84,7 +84,7 @@ int main(int argc, const char **argv) {
 static double forward_pass(double data[28][28]) {
     for (int i = 0; i < 28; ++i) {
         for (int j = 0; j < 28; ++j) {
-            input_a[i * 28 + j] = data[i][j];
+            Rinput_a[i * 28 + j] = data[i][j];
         }
     }
     double start = gettime();

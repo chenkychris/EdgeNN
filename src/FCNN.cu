@@ -84,7 +84,7 @@ static void learn(cudaStream_t stream1) {
 
 static double forward_propagation(float *data, cudaStream_t stream1) {
     for (int i = 0; i < InDim; i++)
-        input_a[i] = data[i];
+        Finput_a[i] = data[i];
     l_input.clear();
     l_h.clear();
     l_f.clear();
