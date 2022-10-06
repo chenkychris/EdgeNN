@@ -8,36 +8,37 @@
 #include <sys/time.h>
 #include <vector>
 #endif
+
 float offset = 1;
 #define Offset 1
-#define inputDim 227 * 227 * 3
-#define c1wDim 11 * 11 * 3 * 2 * 48
-#define c1N 96
-#define c1outDim 2 * 55 * 55 * 48
-#define p1outDim 2 * 31 * 31 * 48
-#define c2wDim 5 * 5 * 48 * 2 * 128
-#define c2N 256
-#define c2outDim 2 * 128 * 27 * 27
-#define p2outDim 2 * 15 * 15 * 128
-#define c3wDim 3 * 3 * 256 * 384
-#define c3N 384
-#define c3outDim 2 * 13 * 13 * 192
-#define c4wDim 3 * 3 * 192 * 2 * 384
-#define c4N 384
-#define c4outDim 2 * 13 * 13 * 192
-#define c5wDim 3 * 3 * 384 * 2 * 128
-#define c5N 256
-#define c5outDim 2 * 13 * 13 * 128
-#define p3outDim 2 * 6 * 6 * 128
-#define f1wDim 6 * 6 * 256 * 2 * 2048
-#define f1N 2 * 2048
-#define f1outDim 4096
-#define f2wDim 4096 * 4096
-#define f2N 2 * 2048
-#define f2outDim 4096
-#define f3wDim 4096 * 1000
-#define f3N 1000
-#define f3outDim 1000
+#define AinputDim 227 * 227 * 3
+#define Ac1wDim 11 * 11 * 3 * 2 * 48
+#define Ac1N 96
+#define Ac1outDim 2 * 55 * 55 * 48
+#define Ap1outDim 2 * 31 * 31 * 48
+#define Ac2wDim 5 * 5 * 48 * 2 * 128
+#define Ac2N 256
+#define Ac2outDim 2 * 128 * 27 * 27
+#define Ap2outDim 2 * 15 * 15 * 128
+#define Ac3wDim 3 * 3 * 256 * 384
+#define Ac3N 384
+#define Ac3outDim 2 * 13 * 13 * 192
+#define Ac4wDim 3 * 3 * 192 * 2 * 384
+#define Ac4N 384
+#define Ac4outDim 2 * 13 * 13 * 192
+#define Ac5wDim 3 * 3 * 384 * 2 * 128
+#define Ac5N 256
+#define Ac5outDim 2 * 13 * 13 * 128
+#define Ap3outDim 2 * 6 * 6 * 128
+#define Af1wDim 6 * 6 * 256 * 2 * 2048
+#define Af1N 2 * 2048
+#define Af1outDim 4096
+#define Af2wDim 4096 * 4096
+#define Af2N 2 * 2048
+#define Af2outDim 4096
+#define Af3wDim 4096 * 1000
+#define Af3N 1000
+#define Af3outDim 1000
 
 double gettime() {
     struct timeval t;
@@ -47,55 +48,55 @@ double gettime() {
 
 // global mem//
 double mallocStart = gettime();
-__device__ __managed__ float input_a[inputDim];
+__device__ __managed__ float input_a[AinputDim];
 
-__device__ __managed__ float c1_weight[c1wDim];
-__device__ __managed__ float c1_bias[c1N];
-__device__ __managed__ float c1_a[c1outDim];
-__device__ __managed__ float c1_z[c1outDim];
-__device__ __managed__ float c1_o[c1outDim];
+__device__ __managed__ float c1_weight[Ac1wDim];
+__device__ __managed__ float c1_bias[Ac1N];
+__device__ __managed__ float c1_a[Ac1outDim];
+__device__ __managed__ float c1_z[Ac1outDim];
+__device__ __managed__ float c1_o[Ac1outDim];
 
-__device__ __managed__ float p1_a[p1outDim];
+__device__ __managed__ float p1_a[Ap1outDim];
 
-__device__ __managed__ float c2_weight[c2wDim];
-__device__ __managed__ float c2_bias[c2N];
-__device__ __managed__ float c2_a[c2outDim];
-__device__ __managed__ float c2_z[c2outDim];
-__device__ __managed__ float c2_o[c2outDim];
+__device__ __managed__ float c2_weight[Ac2wDim];
+__device__ __managed__ float c2_bias[Ac2N];
+__device__ __managed__ float c2_a[Ac2outDim];
+__device__ __managed__ float c2_z[Ac2outDim];
+__device__ __managed__ float c2_o[Ac2outDim];
 
-__device__ __managed__ float p2_a[p2outDim];
+__device__ __managed__ float p2_a[Ap2outDim];
 
-__device__ __managed__ float c3_weight[c3wDim];
-__device__ __managed__ float c3_bias[c3N];
-__device__ __managed__ float c3_a[c3outDim];
-__device__ __managed__ float c3_z[c3outDim];
+__device__ __managed__ float c3_weight[Ac3wDim];
+__device__ __managed__ float c3_bias[Ac3N];
+__device__ __managed__ float c3_a[Ac3outDim];
+__device__ __managed__ float c3_z[Ac3outDim];
 
-__device__ __managed__ float c4_weight[c4wDim];
-__device__ __managed__ float c4_bias[c4N];
-__device__ __managed__ float c4_a[c4outDim];
-__device__ __managed__ float c4_z[c4outDim];
+__device__ __managed__ float c4_weight[Ac4wDim];
+__device__ __managed__ float c4_bias[Ac4N];
+__device__ __managed__ float c4_a[Ac4outDim];
+__device__ __managed__ float c4_z[Ac4outDim];
 
-__device__ __managed__ float c5_weight[c5wDim];
-__device__ __managed__ float c5_bias[c5N];
-__device__ __managed__ float c5_a[c5outDim];
-__device__ __managed__ float c5_z[c5outDim];
+__device__ __managed__ float c5_weight[Ac5wDim];
+__device__ __managed__ float c5_bias[Ac5N];
+__device__ __managed__ float c5_a[Ac5outDim];
+__device__ __managed__ float c5_z[Ac5outDim];
 
-__device__ __managed__ float p3_a[p3outDim];
+__device__ __managed__ float p3_a[Ap3outDim];
 
-__device__ __managed__ float f1_weight[f1wDim];
-__device__ __managed__ float f1_bias[f1N];
-__device__ __managed__ float f1_a[f1outDim];
-__device__ __managed__ float f1_z[f1outDim];
+__device__ __managed__ float f1_weight[Af1wDim];
+__device__ __managed__ float f1_bias[Af1N];
+__device__ __managed__ float f1_a[Af1outDim];
+__device__ __managed__ float f1_z[Af1outDim];
 
-__device__ __managed__ float f2_weight[f2wDim];
-__device__ __managed__ float f2_bias[f2N];
-__device__ __managed__ float f2_a[f2outDim];
-__device__ __managed__ float f2_z[f2outDim];
+__device__ __managed__ float f2_weight[Af2wDim];
+__device__ __managed__ float f2_bias[Af2N];
+__device__ __managed__ float f2_a[Af2outDim];
+__device__ __managed__ float f2_z[Af2outDim];
 
-__device__ __managed__ float f3_weight[f3wDim];
-__device__ __managed__ float f3_bias[f3N];
-__device__ __managed__ float f3_a[f3outDim];
-__device__ __managed__ float f3_z[f3outDim];
+__device__ __managed__ float f3_weight[Af3wDim];
+__device__ __managed__ float f3_bias[Af3N];
+__device__ __managed__ float f3_a[Af3outDim];
+__device__ __managed__ float f3_z[Af3outDim];
 double mallocEnd = gettime();
 
 const static float dt = 1.0E-01f;
@@ -248,93 +249,91 @@ void fp_bias_f_cpu(float *z, float *bias);
 
 // LeNet
 #define DEVICE 0
-#define gpurun 1
-#define cpurun 1
-#define inputDim 28 * 28
-#define c1wDim 5 * 5
-#define c1N 6
-#define c1outDim 24 * 24 * 6
-#define s1wDim 2 * 2
-#define s1N 1
-#define s1outDim 12 * 12 * 6
-#define c2wDim 5 * 5 * 6
-#define c2N 16
-#define c2outDim 8 * 8 * 16
-#define s2wDim 2 * 2
-#define s2N 1
-#define s2outDim 4 * 4 * 16
-#define c3wDim 4 * 4 * 16
-#define c3N 120
-#define c3outDim 1 * 1 * 120
-#define f1wDim 120
-#define f1N 84
-#define f1outDim 84
-#define f2wDim 84
-#define f2N 10
-#define f2outDim 10
+#define LinputDim 28 * 28
+#define Lc1wDim 5 * 5
+#define Lc1N 6
+#define Lc1outDim 24 * 24 * 6
+#define Ls1wDim 2 * 2
+#define Ls1N 1
+#define Ls1outDim 12 * 12 * 6
+#define Lc2wDim 5 * 5 * 6
+#define Lc2N 16
+#define Lc2outDim 8 * 8 * 16
+#define Ls2wDim 2 * 2
+#define Ls2N 1
+#define Ls2outDim 4 * 4 * 16
+#define Lc3wDim 4 * 4 * 16
+#define Lc3N 120
+#define Lc3outDim 1 * 1 * 120
+#define Lf1wDim 120
+#define Lf1N 84
+#define Lf1outDim 84
+#define Lf2wDim 84
+#define Lf2N 10
+#define Lf2outDim 10
 
 const static float dt = 1.0E-01f;
 const static float threshold = 1.0E-02f;
 
 // global mem//
 double mallocStart = gettime();
-__device__ __managed__ float c3_weight[c3wDim];
-__device__ __managed__ float c3_bias[c3N];
-__device__ __managed__ float c3_a[c3outDim];
-__device__ __managed__ float c3_z[c3outDim];
-__device__ __managed__ float c3_dweight[c3wDim];
-__device__ __managed__ float c3_da[c3outDim];
-__device__ __managed__ float c3_dz[c3outDim];
+__device__ __managed__ float c3_weight[Lc3wDim];
+__device__ __managed__ float c3_bias[Lc3N];
+__device__ __managed__ float c3_a[Lc3outDim];
+__device__ __managed__ float c3_z[Lc3outDim];
+__device__ __managed__ float c3_dweight[Lc3wDim];
+__device__ __managed__ float c3_da[Lc3outDim];
+__device__ __managed__ float c3_dz[Lc3outDim];
 
-__device__ __managed__ float input_a[inputDim];
+__device__ __managed__ float input_a[LinputDim];
 
-__device__ __managed__ float c1_weight[c1wDim];
-__device__ __managed__ float c1_bias[c1N];
-__device__ __managed__ float c1_a[c1outDim];
-__device__ __managed__ float c1_z[c1outDim];
-__device__ __managed__ float c1_dweight[c1wDim];
-__device__ __managed__ float c1_da[c1outDim];
-__device__ __managed__ float c1_dz[c1outDim];
+__device__ __managed__ float c1_weight[Lc1wDim];
+__device__ __managed__ float c1_bias[Lc1N];
+__device__ __managed__ float c1_a[Lc1outDim];
+__device__ __managed__ float c1_z[Lc1outDim];
+__device__ __managed__ float c1_dweight[Lc1wDim];
+__device__ __managed__ float c1_da[Lc1outDim];
+__device__ __managed__ float c1_dz[Lc1outDim];
 
-__device__ __managed__ float s1_weight[s1wDim];
-__device__ __managed__ float s1_bias[s1N];
-__device__ __managed__ float s1_a[s1outDim];
-__device__ __managed__ float s1_z[s1outDim];
-__device__ __managed__ float s1_dweight[s1wDim];
-__device__ __managed__ float s1_da[s1outDim];
-__device__ __managed__ float s1_dz[s1outDim];
+__device__ __managed__ float s1_weight[Ls1wDim];
+__device__ __managed__ float s1_bias[Ls1N];
+__device__ __managed__ float s1_a[Ls1outDim];
+__device__ __managed__ float s1_z[Ls1outDim];
+__device__ __managed__ float s1_dweight[Ls1wDim];
+__device__ __managed__ float s1_da[Ls1outDim];
+__device__ __managed__ float s1_dz[Ls1outDim];
 
-__device__ __managed__ float c2_weight[c2wDim];
-__device__ __managed__ float c2_bias[c2N];
-__device__ __managed__ float c2_a[c2outDim];
-__device__ __managed__ float c2_z[c2outDim];
-__device__ __managed__ float c2_dweight[c2wDim];
-__device__ __managed__ float c2_da[c2outDim];
-__device__ __managed__ float c2_dz[c2outDim];
+__device__ __managed__ float c2_weight[Lc2wDim];
+__device__ __managed__ float c2_bias[Lc2N];
+__device__ __managed__ float c2_a[Lc2outDim];
+__device__ __managed__ float c2_z[Lc2outDim];
+__device__ __managed__ float c2_dweight[Lc2wDim];
+__device__ __managed__ float c2_da[Lc2outDim];
+__device__ __managed__ float c2_dz[Lc2outDim];
 
-__device__ __managed__ float s2_weight[s2wDim];
-__device__ __managed__ float s2_bias[s2N];
-__device__ __managed__ float s2_a[s2outDim];
-__device__ __managed__ float s2_z[s2outDim];
-__device__ __managed__ float s2_dweight[s2wDim];
-__device__ __managed__ float s2_da[s2outDim];
-__device__ __managed__ float s2_dz[s2outDim];
+__device__ __managed__ float s2_weight[Ls2wDim];
+__device__ __managed__ float s2_bias[Ls2N];
+__device__ __managed__ float s2_a[Ls2outDim];
+__device__ __managed__ float s2_z[Ls2outDim];
+__device__ __managed__ float s2_dweight[Ls2wDim];
+__device__ __managed__ float s2_da[Ls2outDim];
+__device__ __managed__ float s2_dz[Ls2outDim];
 
-__device__ __managed__ float f1_weight[f1wDim];
-__device__ __managed__ float f1_bias[f1N];
-__device__ __managed__ float f1_a[f1outDim];
-__device__ __managed__ float f1_z[f1outDim];
-__device__ __managed__ float f1_dweight[f1wDim];
-__device__ __managed__ float f1_da[f1outDim];
-__device__ __managed__ float f1_dz[f1outDim];
+__device__ __managed__ float f1_weight[Lf1wDim];
+__device__ __managed__ float f1_bias[Lf1N];
+__device__ __managed__ float f1_a[Lf1outDim];
+__device__ __managed__ float f1_z[Lf1outDim];
+__device__ __managed__ float f1_dweight[Lf1wDim];
+__device__ __managed__ float f1_da[Lf1outDim];
+__device__ __managed__ float f1_dz[Lf1outDim];
 
-__device__ __managed__ float f2_weight[f2wDim];
-__device__ __managed__ float f2_bias[f2N];
-__device__ __managed__ float f2_a[f2outDim];
-__device__ __managed__ float f2_z[f2outDim];
-__device__ __managed__ float f2_dweight[f2wDim];
-__device__ __managed__ float f2_da[f2outDim];
-__device__ __managed__ float f2_dz[f2outDim];
+__device__ __managed__ float f2_weight[Lf2wDim];
+__device__ __managed__ float f2_bias[Lf2N];
+__device__ __managed__ float f2_a[Lf2outDim];
+__device__ __managed__ float f2_z[Lf2outDim];
+__device__ __managed__ float f2_dweight[Lf2wDim];
+__device__ __managed__ float f2_da[Lf2outDim];
+__device__ __managed__ float f2_dz[Lf2outDim];
 double mallocEnd = gettime();
 
 class LLayer {
@@ -374,29 +373,27 @@ const static float threshold = 1.0E-02f;
 
 float offset = 1;
 
-#define Offset 1
+#define RinputDim 28 * 28
 
-#define inputDim 28 * 28
+#define Rc1wDim 5 * 5 * 6
+#define Rc1N 6
+#define Rc1outDim 24 * 24 * 6
 
-#define c1wDim 5 * 5 * 6
-#define c1N 6
-#define c1outDim 24 * 24 * 6
+#define Rc2wDim 2 * 2 * 6
+#define Rc2N 6
+#define Rc2outDim 12 * 12 * 6
 
-#define c2wDim 2 * 2 * 6
-#define c2N 6
-#define c2outDim 12 * 12 * 6
+#define Rc3wDim 2 * 2 * 6
+#define Rc3N 6
+#define Rc3outDim 6 * 6 * 6
 
-#define c3wDim 2 * 2 * 6
-#define c3N 6
-#define c3outDim 6 * 6 * 6
+#define RfwDim 6 * 6 * 6 * 10
+#define RfN 10
+#define RfoutDim 10
 
-#define fwDim 6 * 6 * 6 * 10
-#define fN 10
-#define foutDim 10
-
-#define rwDim 4 * 4 * 1
-#define rN 1
-#define routDim 6 * 6 * 6
+#define RrwDim 4 * 4 * 1
+#define RrN 1
+#define RroutDim 6 * 6 * 6
 
 double gettime() {
     struct timeval t;
@@ -406,32 +403,32 @@ double gettime() {
 
 // global mem//
 double mallocStart = gettime();
-__device__ __managed__ float input_a[inputDim];
+__device__ __managed__ float input_a[RinputDim];
 
-__device__ __managed__ float c1_weight[c1wDim];
-__device__ __managed__ float c1_bias[c1N];
-__device__ __managed__ float c1_a[c1outDim];
-__device__ __managed__ float c1_z[c1outDim];
+__device__ __managed__ float c1_weight[Rc1wDim];
+__device__ __managed__ float c1_bias[Rc1N];
+__device__ __managed__ float c1_a[Rc1outDim];
+__device__ __managed__ float c1_z[Rc1outDim];
 
-__device__ __managed__ float c2_weight[c2wDim];
-__device__ __managed__ float c2_bias[c2N];
-__device__ __managed__ float c2_a[c2outDim];
-__device__ __managed__ float c2_z[c2outDim];
+__device__ __managed__ float c2_weight[Rc2wDim];
+__device__ __managed__ float c2_bias[Rc2N];
+__device__ __managed__ float c2_a[Rc2outDim];
+__device__ __managed__ float c2_z[Rc2outDim];
 
-__device__ __managed__ float c3_weight[c3wDim];
-__device__ __managed__ float c3_bias[c3N];
-__device__ __managed__ float c3_a[c3outDim];
-__device__ __managed__ float c3_z[c3outDim];
+__device__ __managed__ float c3_weight[Rc3wDim];
+__device__ __managed__ float c3_bias[Rc3N];
+__device__ __managed__ float c3_a[Rc3outDim];
+__device__ __managed__ float c3_z[Rc3outDim];
 
-__device__ __managed__ float f_weight[fwDim];
-__device__ __managed__ float f_bias[fN];
-__device__ __managed__ float f_a[foutDim];
-__device__ __managed__ float f_z[foutDim];
+__device__ __managed__ float f_weight[RfwDim];
+__device__ __managed__ float f_bias[RfN];
+__device__ __managed__ float f_a[RfoutDim];
+__device__ __managed__ float f_z[RfoutDim];
 
-__device__ __managed__ float r_weight[rwDim];
-__device__ __managed__ float r_bias[rN];
-__device__ __managed__ float r_a[routDim];
-__device__ __managed__ float r_z[routDim];
+__device__ __managed__ float r_weight[RrwDim];
+__device__ __managed__ float r_bias[RrN];
+__device__ __managed__ float r_a[RroutDim];
+__device__ __managed__ float r_z[RroutDim];
 double mallocEnd = gettime();
 #endif
 
