@@ -633,7 +633,7 @@ FLayer::FLayer(int in, int out, char *arg) {
     this->outDim = out;
 
     if (arg != NULL && strcmp(arg, "input") == 0)
-        a = input_a;
+        a = Finput_a;
 
     if (arg != NULL && (strcmp(arg, "h") == 0 || strcmp(arg, "htest") == 0)) {
         weight = Fh_weight;
