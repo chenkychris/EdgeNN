@@ -47,26 +47,26 @@ int main(int argc, const char **argv) {
     //////////////////////////////cudastream////////////////////////////////////////
     cudaStream_t stream1;
     cudaStreamCreate(&stream1);
-    cudaStreamAttachMemAsync(stream1, &input_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &r_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &r_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &r_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rinput_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc1_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc1_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc1_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc1_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc2_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc2_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc2_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc2_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc3_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc3_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc3_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rc3_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rf_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rf_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rf_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rf_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rr_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rr_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Rr_z, 0, cudaMemAttachHost);
 
     loaddata();
     for (int i = 10; i >= 0; i--) {
@@ -183,5 +183,5 @@ static void learn() {
         }
     }
     fprintf(stdout, "offset=%.1f iniTime - %lf, memcpy Time:0, malloc Time:%lf, kernel Time:%lf,", offset,
-            iniEnd - iniStart, mallocEnd - mallocStart, time_taken);
+            iniEnd - iniStart, RmallocEnd - RmallocStart, time_taken);
 }

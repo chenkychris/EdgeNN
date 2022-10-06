@@ -174,56 +174,56 @@ int main(int argc, const char **argv) {
     double mainIniSt = gettime();
     cudaStream_t stream1;
     cudaStreamCreate(&stream1);
-    cudaStreamAttachMemAsync(stream1, &input_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c1_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s1_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c2_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &s2_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &c3_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f1_dz, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_weight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_bias, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_a, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_z, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_dweight, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_da, 0, cudaMemAttachHost);
-    cudaStreamAttachMemAsync(stream1, &f2_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Linput_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc1_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls1_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc2_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Ls2_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lc3_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf1_dz, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_weight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_bias, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_a, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_z, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_dweight, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_da, 0, cudaMemAttachHost);
+    cudaStreamAttachMemAsync(stream1, &Lf2_dz, 0, cudaMemAttachHost);
 
     cudaMemAdvise(input_a, inputDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
     cudaMemAdvise(c3_weight, c3wDim * sizeof(float), cudaMemAdviseSetReadMostly, 0);
@@ -293,7 +293,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
     t2 = gettime();
     // cout << (t2 - t1) * 1000 << "\t";
     if (gpurun) {
-        apply_step_function<<<64, 64, 0, stream1>>>(l_c1.preact, l_c1.output, l_c1.O);
+        Lapply_step_function<<<64, 64, 0, stream1>>>(l_c1.preact, l_c1.output, l_c1.O);
         if (cpurun && offset != 1)
             cudaEventRecord(c1);
     }
@@ -311,7 +311,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
     t2 = gettime();
     // cout << (t2 - t1) * 1000 << "\t";
     if (gpurun) {
-        apply_step_function<<<32, 32, 0, stream1>>>(l_s1.preact, l_s1.output, l_s1.O);
+        Lapply_step_function<<<32, 32, 0, stream1>>>(l_s1.preact, l_s1.output, l_s1.O);
         if (cpurun && offset != 1)
             cudaEventRecord(s1);
     }
@@ -329,7 +329,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
     t2 = gettime();
     // cout << (t2 - t1) * 1000 << "\t";
     if (gpurun) {
-        apply_step_function<<<32, 32, 0, stream1>>>(l_c2.preact, l_c2.output, l_c2.O);
+        Lapply_step_function<<<32, 32, 0, stream1>>>(l_c2.preact, l_c2.output, l_c2.O);
         if (cpurun && offset != 1)
             cudaEventRecord(c2);
     }
@@ -346,7 +346,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
     t2 = gettime();
     // cout << (t2 - t1) * 1000 << "\t";
     if (gpurun) {
-        apply_step_function<<<16, 16, 0, stream1>>>(l_s2.preact, l_s2.output, l_s2.O);
+        Lapply_step_function<<<16, 16, 0, stream1>>>(l_s2.preact, l_s2.output, l_s2.O);
         if (cpurun && offset != 1)
             cudaEventRecord(s2);
     }
@@ -362,7 +362,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
     t2 = gettime();
     // cout << (t2 - t1) * 1000 << "\t";
     if (gpurun) {
-        apply_step_function<<<16, 16, 0, stream1>>>(l_c3.preact, l_c3.output, l_c3.O);
+        Lapply_step_function<<<16, 16, 0, stream1>>>(l_c3.preact, l_c3.output, l_c3.O);
         if (cpurun && offset != 1)
             cudaEventRecord(c3);
     }
@@ -379,7 +379,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
     t2 = gettime();
     // cout << (t2 - t1) * 1000 << "\t";
     if (gpurun) {
-        apply_step_function<<<16, 16, 0, stream1>>>(l_f1.preact, l_f1.output, l_f1.O);
+        Lapply_step_function<<<16, 16, 0, stream1>>>(l_f1.preact, l_f1.output, l_f1.O);
         if (cpurun && offset != 1)
             cudaEventRecord(f1);
     }
@@ -397,7 +397,7 @@ static double forward_pass(double data[28][28], cudaStream_t stream1, float offs
         cout << (t2 - t1) * 1000 << "\t finish\t";
     printTime = false;
     if (gpurun)
-        apply_step_function<<<4, 4, 0, stream1>>>(l_f2.preact, l_f2.output, l_f2.O);
+        Lapply_step_function<<<4, 4, 0, stream1>>>(l_f2.preact, l_f2.output, l_f2.O);
     cudaDeviceSynchronize();
     double end = gettime();
     return end - start;
@@ -430,5 +430,5 @@ static void learn(cudaStream_t stream1) {
     }
     double end = gettime();
     fprintf(stdout, "offset=%.1f iniTime - %lf, memcpy Time:0, malloc Time:%lf, kernel Time:%lf, ", offset,
-            iniEnd - iniStart + mainIniTime, mallocEnd - mallocStart, time_taken);
+            iniEnd - iniStart + mainIniTime, LmallocEnd - LmallocStart, time_taken);
 }

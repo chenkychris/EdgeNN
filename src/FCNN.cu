@@ -82,7 +82,7 @@ static void learn(cudaStream_t stream1) {
         total_time_taken += t2 - t1;
     }
     fprintf(stdout, "offset=%.1f iniTime - %lf, memcpy Time:0, malloc Time:%lf, kernel Time:%lf, ", offset,
-            iniEnd - iniStart + mainIniTime, mallocEnd - mallocStart, time_taken);
+            iniEnd - iniStart + mainIniTime, FmallocEnd - FmallocStart, time_taken);
 }
 
 static double forward_propagation(float *data, cudaStream_t stream1) {
@@ -176,7 +176,7 @@ __global__ void makeError(float *dz, float *a, float *Y, const int N, float *err
 __global__ void apply_grad(float *output, float *grad, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     if (pos < N)
-        output[pos] -= dt * grad[pos];
+        output[pos] -= Fdt * grad[pos];
 }
 
 __global__ void fp_z_h(float *input, float *z, float weight[hDim][InDim], float *bias, float offset) {
@@ -222,7 +222,7 @@ void makeError_cpu(float *dz, float *a, float *Y, const int N, float *err) {
 void apply_grad_cpu(float *output, float *grad, const int N) {
     const int startN = N * offset;
     for (int idx = startN; idx < N; ++idx) {
-        output[idx] -= dt * grad[idx];
+        output[idx] -= Fdt * grad[idx];
     }
 }
 

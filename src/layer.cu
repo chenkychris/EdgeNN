@@ -132,7 +132,7 @@ void ALayer::bp_clear() {
 
 void ALayer::Output_Layer(float *data) { cudaMemcpy(L_output, data, sizeof(float) * O, cudaMemcpyDeviceToHost); }
 
-__device__ float step_function(float v) // Sigmoid function::Activation Function
+__device__ float Astep_function(float v) // Sigmoid function::Activation Function
 {
     return max(0.f, v);
 }
@@ -183,13 +183,13 @@ float normalization_cpu(float *input, float u, int idx, const int O, const int N
     return u / pow((2 + (0.0001 * tmp_sum)), 0.75);
 } // normalization
 
-__global__ void apply_step_function(float *input, float *output, const int N) {
+__global__ void Aapply_step_function(float *input, float *output, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     const int size = blockDim.x * gridDim.x;
     // int endN=N*offset;
 
     for (int idx = N * pos / size; idx < N * (pos + 1) / size; ++idx) {
-        output[idx] = step_function(input[idx]);
+        output[idx] = Astep_function(input[idx]);
     }
 }
 void apply_step_function_cpu(float *input, float *output, const int N) {
@@ -215,7 +215,7 @@ void normalization_function_cpu(float *input, float *output, const int O, const 
 
 } // normalization
 
-__global__ void makeError(float *err, float *output, unsigned int Y, const int N) {
+__global__ void AmakeError(float *err, float *output, unsigned int Y, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x; // find specific index/thread in GPU
     const int size = blockDim.x * gridDim.x;               // the size of all index/thread in GPU
 
@@ -224,12 +224,12 @@ __global__ void makeError(float *err, float *output, unsigned int Y, const int N
     }
 }
 
-__global__ void apply_grad(float *output, float *grad, const int N) {
+__global__ void Aapply_grad(float *output, float *grad, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     const int size = blockDim.x * gridDim.x;
 
     for (int idx = N * pos / size; idx < N * (pos + 1) / size; ++idx) {
-        output[idx] += dt * grad[idx];
+        output[idx] += Adt * grad[idx];
     }
 }
 
@@ -802,21 +802,21 @@ void LLayer::bp_clear() {
     memset(d_weight, 0x00, sizeof(float) * M * N);
 }
 
-__device__ float step_function(float v) // Sigmoid function::Activation Function
+__device__ float Lstep_function(float v) // Sigmoid function::Activation Function
 {
     return 1 / (1 + exp(-v));
 }
 
-__global__ void apply_step_function(float *input, float *output, const int N) {
+__global__ void Lapply_step_function(float *input, float *output, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     const int size = blockDim.x * gridDim.x;
 
     for (int idx = N * pos / size; idx < N * (pos + 1) / size; ++idx) {
-        output[idx] = step_function(input[idx]);
+        output[idx] = Lstep_function(input[idx]);
     }
 }
 
-__global__ void makeError(float *err, float *output, unsigned int Y, const int N) {
+__global__ void LmakeError(float *err, float *output, unsigned int Y, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x; // find specific index/thread in GPU
     const int size = blockDim.x * gridDim.x;               // the size of all index/thread in GPU
 
@@ -825,11 +825,11 @@ __global__ void makeError(float *err, float *output, unsigned int Y, const int N
     }
 }
 
-__global__ void apply_grad(float *output, float *grad, const int N) {
+__global__ void Lapply_grad(float *output, float *grad, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     const int size = blockDim.x * gridDim.x;
     for (int idx = N * pos / size; idx < N * (pos + 1) / size; ++idx) {
-        output[idx] += dt * grad[idx];
+        output[idx] += Ldt * grad[idx];
     }
 }
 
@@ -940,7 +940,7 @@ __global__ void apply_sigmoid(float *input, float *output, const int N) {
     }
 }
 
-__global__ void makeError(float *err, float *output, unsigned int Y, const int N) {
+__global__ void RmakeError(float *err, float *output, unsigned int Y, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     const int size = blockDim.x * gridDim.x;
     for (int idx = N * pos / size; idx < N * (pos + 1) / size; ++idx) {
@@ -948,11 +948,11 @@ __global__ void makeError(float *err, float *output, unsigned int Y, const int N
     }
 }
 
-__global__ void apply_grad(float *output, float *grad, const int N) {
+__global__ void Rapply_grad(float *output, float *grad, const int N) {
     const int pos = blockIdx.x * blockDim.x + threadIdx.x;
     const int size = blockDim.x * gridDim.x;
     for (int idx = N * pos / size; idx < N * (pos + 1) / size; ++idx) {
-        output[idx] += dt * grad[idx];
+        output[idx] += Rdt * grad[idx];
     }
 }
 
