@@ -104,7 +104,7 @@ void normalizeBGR(float *hostInputImageData) {
 void readWeights(int level, float *wconv, float *bias) {
     float dval;
     FILE *weight;
-    weight = fopen("./data/vgg16_weights.txt", "r");
+    weight = fopen("../data/VGG/vgg16_weights.txt", "r");
     if (weight == NULL) {
         exit(1);
     }
