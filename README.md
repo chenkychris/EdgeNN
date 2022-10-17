@@ -14,7 +14,7 @@ With the development of the architectures and the growth of AIoT application req
 
 1. Set up CUDA environment.
 
-2. Complie all example program
+2. Complie all example programs
 
 ```makefile
 make
